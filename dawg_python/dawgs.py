@@ -375,13 +375,14 @@ class BytesDAWG(CompletionDAWG):
             b_step = key[word_pos].encode('utf8')
 
             if b_step in replace_chars:
-                next_index = index
-                b_replace_char, u_replace_char = replace_chars[b_step]
+                for (b_replace_char, u_replace_char) in replace_chars[b_step]:
+                    next_index = index
 
-                next_index = self.dct.follow_bytes(b_replace_char, next_index)
-                if next_index:
-                    extra_items = self._similar_item_values(word_pos + 1, key, next_index, replace_chars)
-                    res += extra_items
+                    next_index = self.dct.follow_bytes(b_replace_char, next_index)
+
+                    if next_index:
+                        extra_items = self._similar_item_values(word_pos + 1, key, next_index, replace_chars)
+                        res += extra_items
 
             index = self.dct.follow_bytes(b_step, index)
             if not index:
