@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
 import struct
 from binascii import a2b_base64
 
 from . import wrapper
+from .compat import int_from_byte
 
-
-class DAWG:
+class DAWG(object):
     """
     Base DAWG wrapper.
     """
-
     def __init__(self):
         self.dct = None
 
@@ -38,15 +40,15 @@ class DAWG:
             b_step = key[word_pos].encode('utf8')
 
             if b_step in replace_chars:
-                next_index = index
-                b_replace_char, u_replace_char = replace_chars[b_step]
+                for (b_replace_char, u_replace_char) in replace_chars[b_step]:
+                    next_index = index
 
-                next_index = self.dct.follow_bytes(b_replace_char, next_index)
+                    next_index = self.dct.follow_bytes(b_replace_char, next_index)
 
-                if next_index is not None:
-                    prefix = current_prefix + key[start_pos:word_pos] + u_replace_char
-                    extra_keys = self._similar_keys(prefix, key, next_index, replace_chars)
-                    res += extra_keys
+                    if next_index:
+                        prefix = current_prefix + key[start_pos:word_pos] + u_replace_char
+                        extra_keys = self._similar_keys(prefix, key, next_index, replace_chars)
+                        res += extra_keys
 
             index = self.dct.follow_bytes(b_step, index)
             if index is None:
@@ -67,7 +69,7 @@ class DAWG:
 
         ``replaces`` is an object obtained from
         ``DAWG.compile_replaces(mapping)`` where mapping is a dict
-        that maps single-char unicode sitrings to another single-char
+        that maps single-char unicode strings to (one or more) single-char
         unicode strings.
 
         This may be useful e.g. for handling single-character umlauts.
@@ -77,22 +79,26 @@ class DAWG:
     @classmethod
     def compile_replaces(cls, replaces):
 
-        for k, v in replaces.items():
-            if len(k) != 1 or len(v) != 1:
-                raise ValueError("Keys and values must be single-char unicode strings.")
+        for k,v in replaces.items():
+            if len(k) != 1:
+                raise ValueError("Keys must be single-char unicode strings.")
+            if (isinstance(v, str) and len(v) != 1):
+                raise ValueError("Values must be single-char unicode strings or non-empty lists of such.")
+            if isinstance(v, list) and (any(len(v_entry) != 1 for v_entry in v) or len(v) < 1):
+                raise ValueError("Values must be single-char unicode strings or non-empty lists of such.")
 
         return dict(
             (
                 k.encode('utf8'),
-                (v.encode('utf8'), v),
+                [(v_entry.encode('utf8'), v_entry) for v_entry in v]
             )
             for k, v in replaces.items()
         )
 
     def prefixes(self, key):
-        """
+        '''
         Returns a list with keys of this DAWG that are prefixes of the ``key``.
-        """
+        '''
         res = []
         index = self.dct.ROOT
         if not isinstance(key, bytes):
@@ -101,7 +107,7 @@ class DAWG:
         pos = 1
 
         for ch in key:
-            index = self.dct.follow_char(ch, index)
+            index = self.dct.follow_char(int_from_byte(ch), index)
             if not index:
                 break
 
@@ -112,13 +118,14 @@ class DAWG:
         return res
 
 
+
 class CompletionDAWG(DAWG):
     """
     DAWG with key completion support.
     """
 
     def __init__(self):
-        super().__init__()
+        super(CompletionDAWG, self).__init__()
         self.guide = None
 
     def keys(self, prefix=""):
@@ -150,6 +157,7 @@ class CompletionDAWG(DAWG):
         while completer.next():
             yield completer.key.decode('utf8')
 
+
     def load(self, path):
         """
         Loads DAWG from a file.
@@ -167,7 +175,6 @@ class CompletionDAWG(DAWG):
 PAYLOAD_SEPARATOR = b'\x01'
 MAX_VALUE_SIZE = 32768
 
-
 class BytesDAWG(CompletionDAWG):
     """
     DAWG that is able to transparently store extra binary payload in keys;
@@ -178,7 +185,6 @@ class BytesDAWG(CompletionDAWG):
     """
 
     def __init__(self, payload_separator=PAYLOAD_SEPARATOR):
-        super().__init__()
         self._payload_separator = payload_separator
 
     def __contains__(self, key):
@@ -186,8 +192,8 @@ class BytesDAWG(CompletionDAWG):
             key = key.encode('utf8')
         return bool(self._follow_key(key))
 
-    # def b_has_key(self, key):
-    #     return bool(self._follow_key(key))
+#    def b_has_key(self, key):
+#        return bool(self._follow_key(key))
 
     def __getitem__(self, key):
         res = self.get(key)
@@ -223,7 +229,9 @@ class BytesDAWG(CompletionDAWG):
 
         completer.start(index)
         while completer.next():
-            b64_data = completer.key
+            # a2b_base64 doesn't support bytearray in python 2.6
+            # so it is converted (and copied) to bytes
+            b64_data = bytes(completer.key)
             res.append(a2b_base64(b64_data))
 
         return res
@@ -290,7 +298,9 @@ class BytesDAWG(CompletionDAWG):
 
         while completer.next():
             key, value = completer.key.split(self._payload_separator)
-            res.append((key.decode('utf8'), a2b_base64(value)))
+            res.append(
+                (key.decode('utf8'), a2b_base64(bytes(value))) # bytes() cast is a python 2.6 fix
+            )
 
         return res
 
@@ -309,8 +319,9 @@ class BytesDAWG(CompletionDAWG):
 
         while completer.next():
             key, value = completer.key.split(self._payload_separator)
-            item = (key.decode('utf8'), a2b_base64(value))
+            item = (key.decode('utf8'), a2b_base64(bytes(value))) # bytes() cast is a python 2.6 fix
             yield item
+
 
     def _has_value(self, index):
         return self.dct.follow_bytes(PAYLOAD_SEPARATOR, index)
@@ -326,14 +337,15 @@ class BytesDAWG(CompletionDAWG):
             b_step = key[word_pos].encode('utf8')
 
             if b_step in replace_chars:
-                next_index = index
-                b_replace_char, u_replace_char = replace_chars[b_step]
+                for (b_replace_char, u_replace_char) in replace_chars[b_step]:
+                    next_index = index
 
-                next_index = self.dct.follow_bytes(b_replace_char, next_index)
-                if next_index:
-                    prefix = current_prefix + key[start_pos:word_pos] + u_replace_char
-                    extra_items = self._similar_items(prefix, key, next_index, replace_chars)
-                    res += extra_items
+                    next_index = self.dct.follow_bytes(b_replace_char, next_index)
+
+                    if next_index:
+                        prefix = current_prefix + key[start_pos:word_pos] + u_replace_char
+                        extra_items = self._similar_items(prefix, key, next_index, replace_chars)
+                        res += extra_items
 
             index = self.dct.follow_bytes(b_step, index)
             if not index:
@@ -356,10 +368,11 @@ class BytesDAWG(CompletionDAWG):
 
         ``replaces`` is an object obtained from
         ``DAWG.compile_replaces(mapping)`` where mapping is a dict
-        that maps single-char unicode sitrings to another single-char
+        that maps single-char unicode strings to (one or more) single-char
         unicode strings.
         """
         return self._similar_items("", key, self.dct.ROOT, replaces)
+
 
     def _similar_item_values(self, start_pos, key, index, replace_chars):
         res = []
@@ -375,7 +388,7 @@ class BytesDAWG(CompletionDAWG):
 
                 next_index = self.dct.follow_bytes(b_replace_char, next_index)
                 if next_index:
-                    extra_items = self._similar_item_values(word_pos + 1, key, next_index, replace_chars)
+                    extra_items = self._similar_item_values(word_pos+1, key, next_index, replace_chars)
                     res += extra_items
 
             index = self.dct.follow_bytes(b_step, index)
@@ -398,7 +411,7 @@ class BytesDAWG(CompletionDAWG):
 
         ``replaces`` is an object obtained from
         ``DAWG.compile_replaces(mapping)`` where mapping is a dict
-        that maps single-char unicode sitrings to another single-char
+        that maps single-char unicode strings to (one or more) single-char
         unicode strings.
         """
         return self._similar_item_values(0, key, self.dct.ROOT, replaces)
@@ -406,32 +419,30 @@ class BytesDAWG(CompletionDAWG):
 
 class RecordDAWG(BytesDAWG):
     def __init__(self, fmt, payload_separator=PAYLOAD_SEPARATOR):
-        super().__init__(payload_separator)
+        super(RecordDAWG, self).__init__(payload_separator)
         self._struct = struct.Struct(str(fmt))
         self.fmt = fmt
 
     def _value_for_index(self, index):
-        value = super()._value_for_index(index)
+        value = super(RecordDAWG, self)._value_for_index(index)
         return [self._struct.unpack(val) for val in value]
 
     def items(self, prefix=""):
-        res = super().items(prefix)
+        res = super(RecordDAWG, self).items(prefix)
         return [(key, self._struct.unpack(val)) for (key, val) in res]
 
     def iteritems(self, prefix=""):
-        res = super().iteritems(prefix)
+        res = super(RecordDAWG, self).iteritems(prefix)
         return ((key, self._struct.unpack(val)) for (key, val) in res)
 
 
 LOOKUP_ERROR = -1
-
 
 class IntDAWG(DAWG):
     """
     Dict-like class based on DAWG.
     It can store integer values for unicode keys.
     """
-
     def __getitem__(self, key):
         res = self.get(key, LOOKUP_ERROR)
         if res == LOOKUP_ERROR:
@@ -458,7 +469,6 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
     Dict-like class based on DAWG.
     It can store integer values for unicode keys and support key completion.
     """
-
     def items(self, prefix=""):
         if not isinstance(prefix, bytes):
             prefix = prefix.encode('utf8')
@@ -474,7 +484,9 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
         completer.start(index, prefix)
 
         while completer.next():
-            res.append((completer.key.decode('utf8'), completer.value()))
+            res.append(
+                (completer.key.decode('utf8'), completer.value())
+            )
 
         return res
 
