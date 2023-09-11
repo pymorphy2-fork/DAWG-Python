@@ -4,10 +4,11 @@ from binascii import a2b_base64
 from . import wrapper
 
 
-class DAWG(object):
+class DAWG:
     """
     Base DAWG wrapper.
     """
+
     def __init__(self):
         self.dct = None
 
@@ -115,7 +116,6 @@ class DAWG(object):
         return res
 
 
-
 class CompletionDAWG(DAWG):
     """
     DAWG with key completion support.
@@ -154,7 +154,6 @@ class CompletionDAWG(DAWG):
         while completer.next():
             yield completer.key.decode('utf8')
 
-
     def load(self, path):
         """
         Loads DAWG from a file.
@@ -192,7 +191,7 @@ class BytesDAWG(CompletionDAWG):
         return bool(self._follow_key(key))
 
     # def b_has_key(self, key):
-    #    return bool(self._follow_key(key))
+    #     return bool(self._follow_key(key))
 
     def __getitem__(self, key):
         res = self.get(key)
@@ -317,7 +316,6 @@ class BytesDAWG(CompletionDAWG):
             item = (key.decode('utf8'), a2b_base64(value))
             yield item
 
-
     def _has_value(self, index):
         return self.dct.follow_bytes(PAYLOAD_SEPARATOR, index)
 
@@ -367,7 +365,6 @@ class BytesDAWG(CompletionDAWG):
         unicode strings.
         """
         return self._similar_items("", key, self.dct.ROOT, replaces)
-
 
     def _similar_item_values(self, start_pos, key, index, replace_chars):
         res = []
