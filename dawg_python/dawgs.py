@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import struct
 from binascii import a2b_base64
 
 from . import wrapper
-from .compat import int_from_byte
+
 
 class DAWG(object):
     """
@@ -96,9 +93,9 @@ class DAWG(object):
         )
 
     def prefixes(self, key):
-        '''
+        """
         Returns a list with keys of this DAWG that are prefixes of the ``key``.
-        '''
+        """
         res = []
         index = self.dct.ROOT
         if not isinstance(key, bytes):
@@ -107,7 +104,7 @@ class DAWG(object):
         pos = 1
 
         for ch in key:
-            index = self.dct.follow_char(int_from_byte(ch), index)
+            index = self.dct.follow_char(ch, index)
             if not index:
                 break
 
@@ -125,7 +122,7 @@ class CompletionDAWG(DAWG):
     """
 
     def __init__(self):
-        super(CompletionDAWG, self).__init__()
+        super().__init__()
         self.guide = None
 
     def keys(self, prefix=""):
@@ -175,6 +172,7 @@ class CompletionDAWG(DAWG):
 PAYLOAD_SEPARATOR = b'\x01'
 MAX_VALUE_SIZE = 32768
 
+
 class BytesDAWG(CompletionDAWG):
     """
     DAWG that is able to transparently store extra binary payload in keys;
@@ -185,6 +183,7 @@ class BytesDAWG(CompletionDAWG):
     """
 
     def __init__(self, payload_separator=PAYLOAD_SEPARATOR):
+        super().__init__()
         self._payload_separator = payload_separator
 
     def __contains__(self, key):
@@ -192,8 +191,8 @@ class BytesDAWG(CompletionDAWG):
             key = key.encode('utf8')
         return bool(self._follow_key(key))
 
-#    def b_has_key(self, key):
-#        return bool(self._follow_key(key))
+    # def b_has_key(self, key):
+    #    return bool(self._follow_key(key))
 
     def __getitem__(self, key):
         res = self.get(key)
@@ -229,9 +228,7 @@ class BytesDAWG(CompletionDAWG):
 
         completer.start(index)
         while completer.next():
-            # a2b_base64 doesn't support bytearray in python 2.6
-            # so it is converted (and copied) to bytes
-            b64_data = bytes(completer.key)
+            b64_data = completer.key
             res.append(a2b_base64(b64_data))
 
         return res
@@ -298,9 +295,7 @@ class BytesDAWG(CompletionDAWG):
 
         while completer.next():
             key, value = completer.key.split(self._payload_separator)
-            res.append(
-                (key.decode('utf8'), a2b_base64(bytes(value))) # bytes() cast is a python 2.6 fix
-            )
+            res.append((key.decode('utf8'), a2b_base64(value)))
 
         return res
 
@@ -319,7 +314,7 @@ class BytesDAWG(CompletionDAWG):
 
         while completer.next():
             key, value = completer.key.split(self._payload_separator)
-            item = (key.decode('utf8'), a2b_base64(bytes(value))) # bytes() cast is a python 2.6 fix
+            item = (key.decode('utf8'), a2b_base64(value))
             yield item
 
 
@@ -388,7 +383,7 @@ class BytesDAWG(CompletionDAWG):
 
                 next_index = self.dct.follow_bytes(b_replace_char, next_index)
                 if next_index:
-                    extra_items = self._similar_item_values(word_pos+1, key, next_index, replace_chars)
+                    extra_items = self._similar_item_values(word_pos + 1, key, next_index, replace_chars)
                     res += extra_items
 
             index = self.dct.follow_bytes(b_step, index)
@@ -419,30 +414,32 @@ class BytesDAWG(CompletionDAWG):
 
 class RecordDAWG(BytesDAWG):
     def __init__(self, fmt, payload_separator=PAYLOAD_SEPARATOR):
-        super(RecordDAWG, self).__init__(payload_separator)
+        super().__init__(payload_separator)
         self._struct = struct.Struct(str(fmt))
         self.fmt = fmt
 
     def _value_for_index(self, index):
-        value = super(RecordDAWG, self)._value_for_index(index)
+        value = super()._value_for_index(index)
         return [self._struct.unpack(val) for val in value]
 
     def items(self, prefix=""):
-        res = super(RecordDAWG, self).items(prefix)
+        res = super().items(prefix)
         return [(key, self._struct.unpack(val)) for (key, val) in res]
 
     def iteritems(self, prefix=""):
-        res = super(RecordDAWG, self).iteritems(prefix)
+        res = super().iteritems(prefix)
         return ((key, self._struct.unpack(val)) for (key, val) in res)
 
 
 LOOKUP_ERROR = -1
+
 
 class IntDAWG(DAWG):
     """
     Dict-like class based on DAWG.
     It can store integer values for unicode keys.
     """
+
     def __getitem__(self, key):
         res = self.get(key, LOOKUP_ERROR)
         if res == LOOKUP_ERROR:
@@ -469,6 +466,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
     Dict-like class based on DAWG.
     It can store integer values for unicode keys and support key completion.
     """
+
     def items(self, prefix=""):
         if not isinstance(prefix, bytes):
             prefix = prefix.encode('utf8')
@@ -484,9 +482,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
         completer.start(index, prefix)
 
         while completer.next():
-            res.append(
-                (completer.key.decode('utf8'), completer.value())
-            )
+            res.append((completer.key.decode('utf8'), completer.value()))
 
         return res
 
