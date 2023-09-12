@@ -1,0 +1,31 @@
+name: Deploy on pypi.org
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          cache: "poetry"
+          cache-dependency-path: poetry.lock
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build and publish on pypi.org
+        env:
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: poetry publish --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
