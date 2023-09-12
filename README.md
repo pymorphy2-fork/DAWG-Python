@@ -4,12 +4,12 @@
 [![Coverage Status](https://coveralls.io/repos/github/pymorphy2-fork/DAWG-Python/badge.svg?branch=master)](https://coveralls.io/github/pymorphy2-fork/DAWG-Python?branch=master)
 
 This pure-python package provides read-only access for files created by
-[dawgdic](https://code.google.com/p/dawgdic/) C++ library and
-[DAWG](https://github.com/kmike/DAWG) python package.
+[dawgdic][1] C++ library and
+[DAWG][2] python package.
 
 This package is not capable of creating DAWGs. It works with DAWGs built
-by [dawgdic](https://code.google.com/p/dawgdic/) C++ library or
-[DAWG](https://github.com/kmike/DAWG) Python extension module. The main
+by [dawgdic][1] C++ library or
+[DAWG][2] Python extension module. The main
 purpose of DAWG-Python is to provide access to DAWGs without
 requiring compiled extensions. It is also quite fast under PyPy (see
 benchmarks).
@@ -21,10 +21,10 @@ pip install DAWG-Python
 # Usage
 
 The aim of DAWG-Python is to be API- and binary-compatible with
-[DAWG](https://github.com/kmike/DAWG) when it is possible.
+[DAWG][2] when it is possible.
 
 First, you have to create a dawg using
-[DAWG](https://github.com/kmike/DAWG) module:
+[DAWG][2] module:
 
     import dawg
     d = dawg.DAWG(data)
@@ -35,7 +35,7 @@ And then this dawg can be loaded without requiring C extensions:
     import dawg_python
     d = dawg_python.DAWG().load('words.dawg')
 
-Please consult [DAWG](https://github.com/kmike/DAWG) docs for detailed
+Please consult [DAWG][2] docs for detailed
 usage. Some features (like constructor parameters or `save` method) are
 intentionally unsupported.
 
@@ -89,12 +89,12 @@ words), PyPy 1.9, macbook air i5 1.8 Ghz):
 
 Under CPython expect it to be about 50x slower. Memory consumption of
 DAWG-Python should be the same as of
-[DAWG](https://github.com/kmike/DAWG).
+[DAWG][2].
 
 # Current limitations
 
 -   This package is not capable of creating DAWGs;
--   all the limitations of [DAWG](https://github.com/kmike/DAWG) apply.
+- all the limitations of [DAWG][2] apply.
 
 Contributions are welcome!
 
@@ -107,9 +107,9 @@ Feel free to submit ideas, bugs or pull requests.
 
 ## Running tests and benchmarks
 
-Make sure [tox](http://tox.testrun.org) is installed and run
+Make sure [pytest][3] is installed and run
 
-    $ tox
+    $ pytest .
 
 from the source checkout. Tests should pass under python 3.8, 3.9, 3.10, 3.11 and PyPy3 \>= 7.3.
 
@@ -124,9 +124,15 @@ CPython).
 
 -   Mikhail Korobov \<<kmike84@gmail.com>\>
 
-The algorithms are from [dawgdic](https://code.google.com/p/dawgdic/)
+The algorithms are from [dawgdic][1]
 C++ library by Susumu Yata & contributors.
 
 # License
 
 This package is licensed under MIT License.
+
+[1]: https://code.google.com/p/dawgdic/
+
+[2]: https://github.com/pymorphy2-fork/DAWG
+
+[3]: https://docs.pytest.org/en/7.4.x/getting-started.html
