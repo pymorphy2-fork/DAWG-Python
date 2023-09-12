@@ -16,8 +16,9 @@ benchmarks).
 
 # Installation
 
+```commandline
 pip install DAWG-Python
-
+```
 # Usage
 
 The aim of DAWG-Python is to be API- and binary-compatible with
@@ -26,15 +27,19 @@ The aim of DAWG-Python is to be API- and binary-compatible with
 First, you have to create a dawg using
 [DAWG][2] module:
 
-    import dawg
-    d = dawg.DAWG(data)
-    d.save('words.dawg')
+```python
+import dawg
 
+d = dawg.DAWG(data)
+d.save('words.dawg')
+```
 And then this dawg can be loaded without requiring C extensions:
 
-    import dawg_python
-    d = dawg_python.DAWG().load('words.dawg')
+```python
+import dawg_python
 
+d = dawg_python.DAWG().load('words.dawg')
+```
 Please consult [DAWG][2] docs for detailed
 usage. Some features (like constructor parameters or `save` method) are
 intentionally unsupported.
@@ -93,7 +98,7 @@ DAWG-Python should be the same as of
 
 # Current limitations
 
--   This package is not capable of creating DAWGs;
+- This package is not capable of creating DAWGs;
 - all the limitations of [DAWG][2] apply.
 
 Contributions are welcome!
@@ -109,20 +114,22 @@ Feel free to submit ideas, bugs or pull requests.
 
 Make sure [pytest][3] is installed and run
 
-    $ pytest .
-
+```commandline
+$ pytest .
+```
 from the source checkout. Tests should pass under python 3.8, 3.9, 3.10, 3.11 and PyPy3 \>= 7.3.
 
 In order to run benchmarks, type
 
-    $ pypy3 -m bench.speed
-
+```commandline
+$ pypy3 -m bench.speed
+```
 This runs benchmarks under PyPy (they are about 50x slower under
 CPython).
 
 ## Authors & Contributors
 
--   Mikhail Korobov \<<kmike84@gmail.com>\>
+- Mikhail Korobov \<<kmike84@gmail.com>\>
 
 The algorithms are from [dawgdic][1]
 C++ library by Susumu Yata & contributors.
