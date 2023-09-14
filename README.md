@@ -105,8 +105,8 @@ Contributions are welcome!
 
 # Contributing
 
-Development happens at GitHub: <https://github.com/pymorphy2-fork/DAWG-Python>
-Issue tracker: <https://github.com/pymorphy2-fork/DAWG-Python/issues>
+- Development happens at GitHub: <https://github.com/pymorphy2-fork/DAWG-Python>
+- Issue tracker: <https://github.com/pymorphy2-fork/DAWG-Python/issues>
 
 Feel free to submit ideas, bugs or pull requests.
 
