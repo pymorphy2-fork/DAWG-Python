@@ -75,7 +75,6 @@ class TestMultiValuedPrediction(object):
     REPLACES = dawg_python.DAWG.compile_replaces({'е': ['ё', 'ѣ'], 'и': 'і'})
 
     DATA = "хлѣб ёлка ель лѣс лѣсное всё всѣ бѣлёная изобрѣтён лев лёв лѣв вѣнскій".split(" ")
-    # STORED_DATA = list(zip(DATA, (encode(w) for w in DATA)))
 
     SUITE = [
         ('осел', []),
