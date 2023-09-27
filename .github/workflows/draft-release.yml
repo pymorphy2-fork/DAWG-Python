@@ -22,7 +22,7 @@ jobs:
           cache-dependency-path: poetry.lock
 
       - name: Install dependencies
-        run: poetry install --without docs
+        run: poetry install
 
       - name: Build project
         run: |
