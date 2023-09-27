@@ -1,15 +1,19 @@
 # Changes
 
+## 0.8.0 (2023-09-27)
+
+- Allow more flexible char substitutes by [@bt2901](https://github.com/bt2901)
+
 ## 0.7.2 (2015-04-18)
 
--   minor speedup;
--   bitbucket mirror is no longer maintained.
+- minor speedup;
+- bitbucket mirror is no longer maintained.
 
 ## 0.7.1 (2014-06-05)
 
--   Switch to setuptools;
--   upload wheel tp pypi;
--   check Python 3.4 compatibility.
+- Switch to setuptools;
+- upload wheel tp pypi;
+- check Python 3.4 compatibility.
 
 ## 0.7 (2013-10-13)
 
@@ -18,7 +22,7 @@ IntDAWG and IntCompletionDAWG are implemented.
 ## 0.6 (2013-03-23)
 
 Use less shared state internally. This should fix thread-safety bugs and
-make iterkeys/iteritems reenterant.
+make iterkeys/iteritems reentrant.
 
 ## 0.5.1 (2013-03-01)
 
@@ -41,7 +45,7 @@ Bug with empty DAWGs is fixed.
 
 ## 0.3 (2012-09-26)
 
--   `iterkeys` and `iteritems` methods.
+- `iterkeys` and `iteritems` methods.
 
 ## 0.2 (2012-09-24)
 
