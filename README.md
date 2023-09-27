@@ -130,6 +130,8 @@ CPython).
 ## Authors & Contributors
 
 - Mikhail Korobov \<kmike84@gmail.com\>
+- [@bt2901](https://github.com/bt2901)
+- [@insolor](https://github.com/insolor)
 
 The algorithms are from [dawgdic][1]
 C++ library by Susumu Yata & contributors.
