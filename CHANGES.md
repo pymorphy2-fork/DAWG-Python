@@ -3,6 +3,8 @@
 ## 0.8.0 (2023-09-27)
 
 - Allow more flexible char substitutes by [@bt2901](https://github.com/bt2901)
+- minimal Python version changed to 3.8 by [@insolor](https://github.com/insolor)
+- setup.py building changed to poetry by [@insolor](https://github.com/insolor)
 
 ## 0.7.2 (2015-04-18)
 
@@ -12,7 +14,7 @@
 ## 0.7.1 (2014-06-05)
 
 - Switch to setuptools;
-- upload wheel tp pypi;
+- upload wheel to pypi;
 - check Python 3.4 compatibility.
 
 ## 0.7 (2013-10-13)

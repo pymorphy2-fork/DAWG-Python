@@ -1,4 +1,4 @@
-# DAWG-Python
+# DAWG2-Python
 
 [![Python tests](https://github.com/pymorphy2-fork/DAWG-Python/actions/workflows/python-tests.yml/badge.svg)](https://github.com/pymorphy2-fork/DAWG-Python/actions/workflows/python-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/pymorphy2-fork/DAWG-Python/badge.svg?branch=master)](https://coveralls.io/github/pymorphy2-fork/DAWG-Python?branch=master)
@@ -17,11 +17,11 @@ benchmarks).
 # Installation
 
 ```commandline
-pip install DAWG-Python
+pip install DAWG2-Python
 ```
 # Usage
 
-The aim of DAWG-Python is to be API- and binary-compatible with
+The aim of DAWG2-Python is to be API- and binary-compatible with
 [DAWG][2] when it is possible.
 
 First, you have to create a dawg using
@@ -129,7 +129,7 @@ CPython).
 
 ## Authors & Contributors
 
-- Mikhail Korobov \<<kmike84@gmail.com>\>
+- Mikhail Korobov \<kmike84@gmail.com\>
 
 The algorithms are from [dawgdic][1]
 C++ library by Susumu Yata & contributors.
@@ -139,7 +139,5 @@ C++ library by Susumu Yata & contributors.
 This package is licensed under MIT License.
 
 [1]: https://code.google.com/p/dawgdic/
-
 [2]: https://github.com/pymorphy2-fork/DAWG
-
 [3]: https://docs.pytest.org/en/7.4.x/getting-started.html
