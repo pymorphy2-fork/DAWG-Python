@@ -43,6 +43,8 @@ jobs:
         cache-dependency-path: poetry.lock
 
     - name: Install dependencies
+      env:
+        POETRY_INSTALLER_NO_BINARY: dawg2
       run: poetry install
 
     - name: Lint with flake8
