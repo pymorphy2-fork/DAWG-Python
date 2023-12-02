@@ -44,8 +44,6 @@ jobs:
 
     - name: Install dependencies
       run: poetry install
-      env:
-        POETRY_INSTALLER_NO_BINARY: dawg2
 
     - name: Lint with flake8
       run: |
