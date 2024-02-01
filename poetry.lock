@@ -140,52 +140,52 @@ toml = ["tomli"]
 
 [[package]]
 name = "dawg2"
-version = "0.12.1"
+version = "0.13.0"
 description = "Fast and memory efficient DAWG (DAFSA) for Python"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "DAWG2-0.12.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:4082a3599529a80afec08af6daa2ddcd909bec8441afd8ec7b73a02c2b5fb35b"},
-    {file = "DAWG2-0.12.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:c35fdd17492086094956ab4858afd7ebc596361780fdcb42fcfe53282fd4a03d"},
-    {file = "DAWG2-0.12.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b2bf9efaa55d6f60da69835455841daeb28c7e44e411ee66f647257f107b912f"},
-    {file = "DAWG2-0.12.1-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ce1e6830f788d914717a2e7c428fb22bc504f4b478a5ed8614e09b8bd7851b3f"},
-    {file = "DAWG2-0.12.1-cp310-cp310-musllinux_1_1_i686.whl", hash = "sha256:c8e664f8dd20e9af47f55d671fa7ed8cb6710901955302e5ecbc2d265ae9e545"},
-    {file = "DAWG2-0.12.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:dffe4ecf97dd1a51c4ea844f7a709746170f15e81f56c33f6413d4b73f61c767"},
-    {file = "DAWG2-0.12.1-cp310-cp310-win32.whl", hash = "sha256:fc42ce3d3f6e6933d6c9f820bea2a1cb4c817da7bd204c7e0b555eb36fa544d7"},
-    {file = "DAWG2-0.12.1-cp310-cp310-win_amd64.whl", hash = "sha256:a673b962863484239d2c3ae6303cc954000a9a4653b69ade3cc8f375997bf294"},
-    {file = "DAWG2-0.12.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:fe723ecd33a410dbda938fad640748bf839f8e4ba21ffc011ddc6c0d559f78e4"},
-    {file = "DAWG2-0.12.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:796cce57e5609130da3f4e12a484dde0c53e8f7463b3740e96a82e9d067fd3a3"},
-    {file = "DAWG2-0.12.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c11069c0456e98aa6b9b6f99fbc91faac1a9ed1d04bf3325da4f1e5da312fa10"},
-    {file = "DAWG2-0.12.1-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:de189f9810078f9844f4a40f19d4bfdcb912c685d2d1c1f4269009a3a5bc8cad"},
-    {file = "DAWG2-0.12.1-cp311-cp311-musllinux_1_1_i686.whl", hash = "sha256:d22405bc2fbb33909dc5ac2fa952a950af04b89eff47d56d7a1ca8761f55f49b"},
-    {file = "DAWG2-0.12.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:2866eca77d61cced282c2df011ff913d0273cc9fbbde94f7c035dc0d400a485d"},
-    {file = "DAWG2-0.12.1-cp311-cp311-win32.whl", hash = "sha256:21224fffe058960aae394bedff2ed9d61c2b2c108b433dc2357fccf85d27851a"},
-    {file = "DAWG2-0.12.1-cp311-cp311-win_amd64.whl", hash = "sha256:41056ee3a47db60354d5df7029ca4dc6ed2d4ea1e601edbe6eff2424a4db6465"},
-    {file = "DAWG2-0.12.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:cbb3f9d945b0028e3fa7492bcc29245b137cfa013b7eb7dc4123b68a8b7d41b3"},
-    {file = "DAWG2-0.12.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:7f161dd46d853b018d45461c9cfcaa654f6c063e3bfecbe10dacf809dc59e73f"},
-    {file = "DAWG2-0.12.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:80cd081e5fe0723e9dfd47899092519992a2f2979fd371500544374cfed90d88"},
-    {file = "DAWG2-0.12.1-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:7ea51ce64f93685edc0881288e9ffe8707c2ae612f07dd75759a038eab1bc95c"},
-    {file = "DAWG2-0.12.1-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:35cfb04222045693c33149c6934e69dac38e348be852b76616b587e961feda37"},
-    {file = "DAWG2-0.12.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:5aabc00933af201ccf9310ba2b26068a8e4361937c90028eacc2a0f5de9eeac3"},
-    {file = "DAWG2-0.12.1-cp312-cp312-win32.whl", hash = "sha256:85e2f3ee15f6eab71b6bc534bfb90bc6cc09bbfa9e1612810adfb2ce5ba9f17c"},
-    {file = "DAWG2-0.12.1-cp312-cp312-win_amd64.whl", hash = "sha256:785d288f7d23c13ec7a5997246e48fa16d9e1a6aa8d9e1e455cae7c72936a46d"},
-    {file = "DAWG2-0.12.1-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:ac15db9ca9022f1a373684a7741f4d583a5c7c3002663810a763f64c0db0c7a0"},
-    {file = "DAWG2-0.12.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2e79ea1df138836ff05155efad3180bce6b19632d650741e863a6d99e009873c"},
-    {file = "DAWG2-0.12.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:886a65d8636dd9da379ededb85ebfb74651a74a87140f1913483c74925271ca5"},
-    {file = "DAWG2-0.12.1-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:fa574c9b2acca398286aae531cb149276eb0b82eee91eabb190e1f8d31d01ad9"},
-    {file = "DAWG2-0.12.1-cp38-cp38-musllinux_1_1_i686.whl", hash = "sha256:77014e03c53f3644231064d463cd55442c17c8553b2d004844202e19538d6b48"},
-    {file = "DAWG2-0.12.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:bbcc66097cbf82a4a2a080fa593342d168a0dcf46b006195ea18fc1e6cedaa9c"},
-    {file = "DAWG2-0.12.1-cp38-cp38-win32.whl", hash = "sha256:87420bf6289e6e224d1d8360394d0f2dd1ed4d0e50e557c22f62c1e0bb5a9031"},
-    {file = "DAWG2-0.12.1-cp38-cp38-win_amd64.whl", hash = "sha256:d71a66a0d0d6748e41a546212c74ad92178c5c383f9f0d30d0168529e6fa3f92"},
-    {file = "DAWG2-0.12.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:f254d61b1f38ffe9daf9254ac0b2970f22a425eb6b8161966a5a4c61bf56cdb3"},
-    {file = "DAWG2-0.12.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:71e73043a0f188f8d239484196bf9143676cfee7c9142dc974c8278958af0dc4"},
-    {file = "DAWG2-0.12.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:447530eff851d5911fee1ee63f30dd6befe6fab585796d36201d023ddfec6846"},
-    {file = "DAWG2-0.12.1-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:9d6a05f2faa6a0d9583a8a70efcbbc6f555624421d7890991ae8dfb842fc3ffe"},
-    {file = "DAWG2-0.12.1-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:c5023f5af186e45f363d53439ea0352e86f2fb47a214ce8cd6689291656ed7e0"},
-    {file = "DAWG2-0.12.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:454bb06103ae43837b4af5074282ba6af15c41f1cc27482ed737434c141c20b0"},
-    {file = "DAWG2-0.12.1-cp39-cp39-win32.whl", hash = "sha256:c5797e8b9318717b91b31ac02699214f4ea71fd2f31070858f4ced171f06bda3"},
-    {file = "DAWG2-0.12.1-cp39-cp39-win_amd64.whl", hash = "sha256:b27a86b7dd1de1d85304d2076a61c058f95a64236e2e440d7dcf36193d60f42a"},
-    {file = "DAWG2-0.12.1.tar.gz", hash = "sha256:7995441823da0f23e6ee9a30b291f348d416b7d0a0bfab2b004d2f55ef792199"},
+    {file = "DAWG2-0.13.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d92a67201abfdc8b6a105fea521ace49a24a33f370470db4e59b10bdf5238720"},
+    {file = "DAWG2-0.13.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e7c8995a8185653e70f62cb8f610b062db6791eb930b2bb22baab77b435c5346"},
+    {file = "DAWG2-0.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d6c2bcd9d8489663ac296ca3ed41e6ae5108b5d0cbe1bd3ccc6f248541245d52"},
+    {file = "DAWG2-0.13.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e35e56aeba8c93a0d5ab713334d5a146b1650514213189c0040a519c5782dc87"},
+    {file = "DAWG2-0.13.0-cp310-cp310-musllinux_1_1_i686.whl", hash = "sha256:5f8c2f02d5a092eb7c7f9b242061e59ba24a15fdb9e6567107cbe885f1e29c3a"},
+    {file = "DAWG2-0.13.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:30d24495634ec43be63522ae2626a133934ea8bb334436a74e44eb57b394b588"},
+    {file = "DAWG2-0.13.0-cp310-cp310-win32.whl", hash = "sha256:fb1018e1b74ac3114b457bfe974ac5c58b30da85334034373be2b6ca3c44ccb1"},
+    {file = "DAWG2-0.13.0-cp310-cp310-win_amd64.whl", hash = "sha256:bcc9e1987734bf88f6937883db6a6c2a263e22a52c67c1092cd4c8dca6399f6f"},
+    {file = "DAWG2-0.13.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:0dd2a4bf387d067b13ec264073c7cd3ad2ada5b3123ca9895371a99778d0818c"},
+    {file = "DAWG2-0.13.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:0361ae90c5cf5e002f02cea6475590986d41058be9fe3d2e1de8e6725d7527c8"},
+    {file = "DAWG2-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f8ae55a9d5dc0c63870496777900edb598a8fb5599058b02e8a6b1c8535f5801"},
+    {file = "DAWG2-0.13.0-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ac70f4383f8fa3f4f506be45e717aace689367f0bbfabf2c307fdd4067d1a713"},
+    {file = "DAWG2-0.13.0-cp311-cp311-musllinux_1_1_i686.whl", hash = "sha256:8bf6a93bc57dd47f22993191d3696b676777c1f91e1f49b8b3db67724966f3ec"},
+    {file = "DAWG2-0.13.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:028dc2a51e1d81a743541f94c14a5affcc06c0c05fbd9ff0b041a5c9a503a4dd"},
+    {file = "DAWG2-0.13.0-cp311-cp311-win32.whl", hash = "sha256:ea95e6a19773c16fb710e8e8b13b1d96cd400dafad82a8616035d77aa1fdd465"},
+    {file = "DAWG2-0.13.0-cp311-cp311-win_amd64.whl", hash = "sha256:7c91ce8af9923eca652cf557945e6aa9c753fe1e192ead129076f3728901f0cf"},
+    {file = "DAWG2-0.13.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:0a2f6146c3b7c0b18de862c6637a1c38be2e4a23dd41fb2b01c6a205840e9437"},
+    {file = "DAWG2-0.13.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:eeb1be07ccc2f7da52b59efe245c41a7612fc8ccae8adb0e8f06ac33e10e4e2f"},
+    {file = "DAWG2-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bce5a9da7498f3b4480f327fe502e04f6f8f1278a04f43835c393198275d225f"},
+    {file = "DAWG2-0.13.0-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:afc94d145bbf768e73df13a105dcb775d3cddc26b8224ea319e7b93a7d1cd2ac"},
+    {file = "DAWG2-0.13.0-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:bf9c085e98d3c006eedc19447439b0481a4c7269ee7b25e1d6bb95a4a16d9146"},
+    {file = "DAWG2-0.13.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8608209d298988ff6a011b66462b9cf5db5b44491a943d5b8ad2aa6aa7314e1a"},
+    {file = "DAWG2-0.13.0-cp312-cp312-win32.whl", hash = "sha256:3f2adaf239296a759f254e64179477cae8ec660dfa0d650ef3c5702e8522234b"},
+    {file = "DAWG2-0.13.0-cp312-cp312-win_amd64.whl", hash = "sha256:cb4c740c5f5cf277046c932857661b178ee5c3f78a43deef04e4537e9f0602a9"},
+    {file = "DAWG2-0.13.0-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:26033d70f1d235ef17281494f1c9ffeb5beff104d9a45e3e98366c635a9292f2"},
+    {file = "DAWG2-0.13.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:741ec5c9d1d0a964de0fabcb5ed83b2064f257761dfeb92e27fb08e295335dbc"},
+    {file = "DAWG2-0.13.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f36796ab31f529e427d30b4281a999b53fd038267f51cc0c747db0a83efc6e2f"},
+    {file = "DAWG2-0.13.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c2b484ff8fa1989e820d9f89428ffff1d23ec131a1c93d8b932621215f06551f"},
+    {file = "DAWG2-0.13.0-cp38-cp38-musllinux_1_1_i686.whl", hash = "sha256:6b9ac1e2e7ee9560ea1bc50e0edc3eceda96f9a690136b906dfaa2ab0c275101"},
+    {file = "DAWG2-0.13.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:691cf67d13a184686719a1f3b118bacfee177b941ebe32936c8539fe6ba861c6"},
+    {file = "DAWG2-0.13.0-cp38-cp38-win32.whl", hash = "sha256:a95ef569035c084a731b0e120377cb270d79e7cce00b6e7d1e80201f3776f208"},
+    {file = "DAWG2-0.13.0-cp38-cp38-win_amd64.whl", hash = "sha256:a92db4ac8bb21e63732db002490b352baded72a7c0a3dd9fc4fbdcb3cc3d9d01"},
+    {file = "DAWG2-0.13.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:66c8bd8b66bda84a420d1f132e5b1d8568b2d851a2e5adac0ef2dcdb70c37ed6"},
+    {file = "DAWG2-0.13.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:acc766e7557c39231943b144b966c3288718fb2ae27bc383d1af99fafeeb9f3d"},
+    {file = "DAWG2-0.13.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aeb707bdb787ee6c96bbb3ac7a7ed932c0ff226f83dfb56bbb00a8debd2cdddd"},
+    {file = "DAWG2-0.13.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f15ef3e30154684bcd38dac229a6c5a8adb187563812ee568485dc8c0877a4ec"},
+    {file = "DAWG2-0.13.0-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:c535a27d26be9d6d0de739db50e4e61d31aeb959f2a12419b779d104a866c588"},
+    {file = "DAWG2-0.13.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:5728020395f788857c653c32ceb00e7d0b13dc39b757557abb79d253592bfe2c"},
+    {file = "DAWG2-0.13.0-cp39-cp39-win32.whl", hash = "sha256:16cf04a2734aadb0f927c5e7bd8a2a4548f086aac6d603dfd8e25bf02986ee04"},
+    {file = "DAWG2-0.13.0-cp39-cp39-win_amd64.whl", hash = "sha256:0890ede9b375341987321daeaa6b6602a99a5bc21116b67a0ba5180d6ab99fed"},
+    {file = "DAWG2-0.13.0.tar.gz", hash = "sha256:d8cbf0ddc15882b723848bf7d849a6d3186a15945738b3cf4bf8cfc810cda2db"},
 ]
 
 [[package]]
@@ -430,4 +430,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "99bd6671dc69dd693a37f9a4d5ab80c89f4eacf21409ca5b9108ee6ab604f0f9"
+content-hash = "70750c50923e2f256b6a18d28cfdf127579fa88f3098cd38002d56901a4bd4b9"
