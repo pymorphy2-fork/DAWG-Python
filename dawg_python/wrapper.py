@@ -9,7 +9,7 @@ class Dictionary:
     Dictionary class for retrieval and binary I/O.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._units = array.array("I")
 
     ROOT = 0
@@ -25,7 +25,7 @@ class Dictionary:
         value_index = (index ^ offset) & units.PRECISION_MASK
         return units.value(self._units[value_index])
 
-    def read(self, fp):
+    def read(self, fp) -> None:
         """Reads a dictionary from an input stream."""
         base_size = struct.unpack("=I", fp.read(4))[0]
         self._units.fromfile(fp, base_size)
@@ -68,7 +68,7 @@ class Dictionary:
     @classmethod
     def load(cls, path):
         dawg = cls()
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             dawg.read(f)
         return dawg
 
@@ -77,7 +77,7 @@ class Guide:
 
     ROOT = 0
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._units = array.array("B")
 
     def child(self, index):
@@ -86,7 +86,7 @@ class Guide:
     def sibling(self, index):
         return self._units[index * 2 + 1]
 
-    def read(self, fp):
+    def read(self, fp) -> None:
         base_size = struct.unpack("=I", fp.read(4))[0]
         self._units.fromfile(fp, base_size * 2)
 
@@ -95,14 +95,14 @@ class Guide:
 
 
 class Completer:
-    def __init__(self, dic=None, guide=None):
+    def __init__(self, dic=None, guide=None) -> None:
         self._dic = dic
         self._guide = guide
 
     def value(self):
         return self._dic.value(self._last_index)
 
-    def start(self, index, prefix=b""):
+    def start(self, index, prefix=b"") -> None:
         self.key = bytearray(prefix)
 
         if self._guide.size():
@@ -159,7 +159,7 @@ class Completer:
         self._index_stack.append(next_index)
         return next_index
 
-    def _find_terminal(self, index):
+    def _find_terminal(self, index) -> bool:
         while not self._dic.has_value(index):
             label = self._guide.child(index)
 
