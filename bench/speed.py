@@ -3,12 +3,13 @@ import string
 import timeit
 
 import dawg_python
+
 from .utils import data_path, words100k
 
 
 def random_words(num):
-    russian = 'абвгдеёжзиклмнопрстуфхцчъыьэюя'
-    alphabet = f'{russian}{string.ascii_letters}'
+    russian = "абвгдеёжзиклмнопрстуфхцчъыьэюя"
+    alphabet = f"{russian}{string.ascii_letters}"
     return ["".join([random.choice(alphabet) for x in range(random.randint(1, 15))]) for _ in range(num)]
 
 
@@ -32,14 +33,14 @@ PREFIXES_8_1k = prefixes1k(WORDS100k, 8)
 PREFIXES_15_1k = prefixes1k(WORDS100k, 15)
 
 
-def format_result(key, value):
-    print("%55s:    %s" % (key, value))
+def format_result(key, value) -> None:
+    pass
 
 
-def bench(name, timer, descr='M ops/sec', op_count=0.1, repeats=3, runs=5):
+def bench(name, timer, descr="M ops/sec", op_count=0.1, repeats=3, runs=5) -> None:
     try:
         times = []
-        for x in range(runs):
+        for _x in range(runs):
             times.append(timer.timeit(repeats))
 
         def op_time(time):
@@ -52,32 +53,31 @@ def bench(name, timer, descr='M ops/sec', op_count=0.1, repeats=3, runs=5):
 
 
 def load_dawg():
-    return dawg_python.DAWG().load(data_path('large', 'dawg.dawg'))
+    return dawg_python.DAWG().load(data_path("large", "dawg.dawg"))
 
 
 def load_bytes_dawg():
-    return dawg_python.BytesDAWG().load(data_path('large', 'bytes_dawg.dawg'))
+    return dawg_python.BytesDAWG().load(data_path("large", "bytes_dawg.dawg"))
 
 
 def load_record_dawg():
-    return dawg_python.RecordDAWG('<H').load(data_path('large', 'record_dawg.dawg'))
+    return dawg_python.RecordDAWG("<H").load(data_path("large", "record_dawg.dawg"))
 
 
 def load_int_dawg():
-    return dawg_python.IntDAWG().load(data_path('large', 'int_dawg.dawg'))
+    return dawg_python.IntDAWG().load(data_path("large", "int_dawg.dawg"))
 
 
-def benchmark():
-    print('\n====== Benchmarks (100k unique unicode words) =======\n')
+def benchmark() -> None:
 
     tests = [
-        ('__getitem__ (hits)', "for word in WORDS100k: data[word]", 'M ops/sec', 0.1, 3),
-        ('get() (hits)', "for word in WORDS100k: data.get(word)", 'M ops/sec', 0.1, 3),
-        ('get() (misses)', "for word in NON_WORDS_10k: data.get(word)", 'M ops/sec', 0.01, 5),
-        ('__contains__ (hits)', "for word in WORDS100k: word in data", 'M ops/sec', 0.1, 3),
-        ('__contains__ (misses)', "for word in NON_WORDS100k: word in data", 'M ops/sec', 0.1, 3),
-        ('items()', 'list(data.items())', ' ops/sec', 1, 1),
-        ('keys()', 'list(data.keys())', ' ops/sec', 1, 1),
+        ("__getitem__ (hits)", "for word in WORDS100k: data[word]", "M ops/sec", 0.1, 3),
+        ("get() (hits)", "for word in WORDS100k: data.get(word)", "M ops/sec", 0.1, 3),
+        ("get() (misses)", "for word in NON_WORDS_10k: data.get(word)", "M ops/sec", 0.01, 5),
+        ("__contains__ (hits)", "for word in WORDS100k: word in data", "M ops/sec", 0.1, 3),
+        ("__contains__ (misses)", "for word in NON_WORDS100k: word in data", "M ops/sec", 0.1, 3),
+        ("items()", "list(data.items())", " ops/sec", 1, 1),
+        ("keys()", "list(data.keys())", " ops/sec", 1, 1),
         # ('values()', 'list(data.values())', ' ops/sec', 1, 1),
     ]
 
@@ -88,18 +88,18 @@ from __main__ import PREFIXES_3_1k, PREFIXES_5_1k, PREFIXES_8_1k, PREFIXES_15_1k
 NON_WORDS_10k = NON_WORDS100k[:10000]
 NON_WORDS_1k = ['ыва', 'xyz', 'соы', 'Axx', 'avы']*200
 """
-    dict_setup = common_setup + 'data = dict((word, len(word)) for word in WORDS100k);'
-    dawg_setup = common_setup + 'data = load_dawg();'
-    bytes_dawg_setup = common_setup + 'data = load_bytes_dawg();'
-    record_dawg_setup = common_setup + 'data = load_record_dawg();'
-    int_dawg_setup = common_setup + 'data = load_int_dawg();'
+    dict_setup = common_setup + "data = dict((word, len(word)) for word in WORDS100k);"
+    dawg_setup = common_setup + "data = load_dawg();"
+    bytes_dawg_setup = common_setup + "data = load_bytes_dawg();"
+    record_dawg_setup = common_setup + "data = load_record_dawg();"
+    int_dawg_setup = common_setup + "data = load_int_dawg();"
 
     structures = [
-        ('dict', dict_setup),
-        ('DAWG', dawg_setup),
-        ('BytesDAWG', bytes_dawg_setup),
-        ('RecordDAWG', record_dawg_setup),
-        ('IntDAWG', int_dawg_setup),
+        ("dict", dict_setup),
+        ("DAWG", dawg_setup),
+        ("BytesDAWG", bytes_dawg_setup),
+        ("RecordDAWG", record_dawg_setup),
+        ("IntDAWG", int_dawg_setup),
     ]
     for test_name, test, descr, op_count, repeats in tests:
         for name, setup in structures:
@@ -110,15 +110,15 @@ NON_WORDS_1k = ['ыва', 'xyz', 'соы', 'Axx', 'avы']*200
     # DAWG-specific benchmarks
     for struct_name, setup in structures[1:]:
         _bench_data = [
-            ('hits', 'WORDS100k'),
-            ('mixed', 'MIXED_WORDS100k'),
-            ('misses', 'NON_WORDS100k'),
+            ("hits", "WORDS100k"),
+            ("mixed", "MIXED_WORDS100k"),
+            ("misses", "NON_WORDS100k"),
         ]
 
-        for meth in ['prefixes']:
+        for meth in ["prefixes"]:
             for name, data in _bench_data:
                 bench(
-                    f'{struct_name}.{meth} ({name})',
+                    f"{struct_name}.{meth} ({name})",
                     timeit.Timer(
                         f"for word in {data}:\n   data.{meth}(word)",
                         setup,
@@ -127,39 +127,38 @@ NON_WORDS_1k = ['ыва', 'xyz', 'соы', 'Axx', 'avы']*200
                 )
 
         _bench_data = [
-            ('xxx', 'avg_len(res)==415', 'PREFIXES_3_1k'),
-            ('xxxxx', 'avg_len(res)==17', 'PREFIXES_5_1k'),
-            ('xxxxxxxx', 'avg_len(res)==3', 'PREFIXES_8_1k'),
-            ('xxxxx..xx', 'avg_len(res)==1.4', 'PREFIXES_15_1k'),
-            ('xxx', 'NON_EXISTING', 'NON_WORDS_1k'),
+            ("xxx", "avg_len(res)==415", "PREFIXES_3_1k"),
+            ("xxxxx", "avg_len(res)==17", "PREFIXES_5_1k"),
+            ("xxxxxxxx", "avg_len(res)==3", "PREFIXES_8_1k"),
+            ("xxxxx..xx", "avg_len(res)==1.4", "PREFIXES_15_1k"),
+            ("xxx", "NON_EXISTING", "NON_WORDS_1k"),
         ]
         for xxx, avg, data in _bench_data:
-            for meth in ['keys', 'items']:
+            for meth in ["keys", "items"]:
                 bench(
                     f'{struct_name}.{meth}(prefix="{xxx}"), {avg}',
                     timeit.Timer(
                         f"for word in {data}: data.{meth}(word)",
                         setup,
                     ),
-                    'K ops/sec',
+                    "K ops/sec",
                     op_count=1,
                     runs=3,
                 )
 
-            for meth in ['iterkeys', 'iteritems']:
+            for meth in ["iterkeys", "iteritems"]:
                 bench(
                     f'{struct_name}.{meth}(prefix="{xxx}"), {avg}',
                     timeit.Timer(
                         f"for word in {data}: list(data.{meth}(word))",
                         setup,
                     ),
-                    'K ops/sec',
+                    "K ops/sec",
                     op_count=1,
                     runs=3,
                 )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     benchmark()
     # profiling()
-    print('\n~~~~~~~~~~~~~~\n')
