@@ -1,5 +1,12 @@
 # Changes
 
+## 0.8.1 (2024-08-01)
+
+Minor technical update:
+
+- fixed typo in github link
+- updated dependencies
+
 ## 0.8.0 (2023-09-27)
 
 - Allow more flexible char substitutes by [@bt2901](https://github.com/bt2901)
