@@ -18,7 +18,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Information Analysis",
     "Topic :: Text Processing :: Linguistic"
 ]
-repository = "https://github.com/pymorphy2-form/DAWG-Python/"
+repository = "https://github.com/pymorphy2-fork/DAWG-Python/"
 
 [tool.poetry.dependencies]
 python = "^3.8"
