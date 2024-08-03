@@ -37,15 +37,44 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 120
 target-version = "py38"
+
+[tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D"]  # Ignore all documentation warnings. Probably not the best option in real projects.
+ignore = [
+    "ANN001",
+    "ANN002",
+    "ANN201",
+    "ANN202",
+    "ANN204",
+    "ANN206",
+    "D",
+    "PTH123",
+]
 fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
+"_prepare_dev_data.py" = [
+    "ERA001",
+]
+
+"*/__init__.py" = [
+    "F401",
+]
+
+"bench/*" = [
+    "ERA001",
+    "PERF401",
+    "PLR0913",
+    "S311",
+]
+
 "tests/*" = [
     "ANN001",
     "ANN002",
     "ANN201",
+    "B017",
+    "PT011",
+    "PTH123",
     "RUF001",
     "RUF012",
     "S101",

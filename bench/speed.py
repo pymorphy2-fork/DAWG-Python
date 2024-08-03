@@ -33,7 +33,7 @@ PREFIXES_8_1k = prefixes1k(WORDS100k, 8)
 PREFIXES_15_1k = prefixes1k(WORDS100k, 15)
 
 
-def format_result(key, value) -> None:
+def format_result(_key, _value) -> None:
     pass
 
 

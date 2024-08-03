@@ -134,7 +134,6 @@ class Completer:
                     # Moves to the previous node.
                     if len(self.key) > 0:
                         self.key.pop()
-                        # self.key[-1] = 0
 
                     self._index_stack.pop()
                     if not self._index_stack:
