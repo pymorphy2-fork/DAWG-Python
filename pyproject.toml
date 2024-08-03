@@ -47,6 +47,8 @@ ignore = [
     "ANN202",
     "ANN204",
     "ANN206",
+    # ^^^ Silence warnings about the type annotations for now
+
     "D",
     "PTH123",
 ]
