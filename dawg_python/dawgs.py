@@ -20,6 +20,7 @@ class DAWG:
     """
     Base DAWG wrapper.
     """
+
     dct: wrapper.Dictionary | None
 
     def __init__(self) -> None:
@@ -41,7 +42,6 @@ class DAWG:
         return self.dct.has_value(index)
 
     def _similar_keys(self, current_prefix: str, key: str, index: int, replace_chars: CompiledReplaces) -> list[str]:
-
         res = []
         start_pos = len(current_prefix)
         end_pos = len(key)
@@ -51,7 +51,7 @@ class DAWG:
             b_step = key[word_pos].encode("utf8")
 
             if b_step in replace_chars:
-                for (b_replace_char, u_replace_char) in replace_chars[b_step]:
+                for b_replace_char, u_replace_char in replace_chars[b_step]:
                     next_index = index
 
                     next_index = self.dct.follow_bytes(b_replace_char, next_index)
@@ -89,22 +89,18 @@ class DAWG:
 
     @classmethod
     def compile_replaces(cls, replaces: Replaces) -> CompiledReplaces:
-
-        for k,v in replaces.items():
+        for k, v in replaces.items():
             if len(k) != 1:
                 msg = "Keys must be single-char unicode strings."
                 raise ValueError(msg)
-            if (isinstance(v, str) and len(v) != 1):
+            if isinstance(v, str) and len(v) != 1:
                 msg = "Values must be single-char unicode strings or non-empty lists of such."
                 raise ValueError(msg)
             if isinstance(v, list) and (any(len(v_entry) != 1 for v_entry in v) or len(v) < 1):
                 msg = "Values must be single-char unicode strings or non-empty lists of such."
                 raise ValueError(msg)
 
-        return {
-            k.encode("utf8"): [(v_entry.encode("utf8"), v_entry) for v_entry in v]
-            for k, v in replaces.items()
-        }
+        return {k.encode("utf8"): [(v_entry.encode("utf8"), v_entry) for v_entry in v] for k, v in replaces.items()}
 
     def prefixes(self, key: str | bytes) -> list[str]:
         """
@@ -133,6 +129,7 @@ class CompletionDAWG(DAWG):
     """
     DAWG with key completion support.
     """
+
     dct: wrapper.Dictionary
     guide: wrapper.Guide | None
 
@@ -331,8 +328,13 @@ class BytesDAWG(CompletionDAWG):
     def _has_value(self, index: int) -> int | None:
         return self.dct.follow_bytes(PAYLOAD_SEPARATOR, index)
 
-    def _similar_items(self, current_prefix: str, key: str, index: int, replace_chars: CompiledReplaces) -> list[tuple[str, bytes]]:
-
+    def _similar_items(
+        self,
+        current_prefix: str,
+        key: str,
+        index: int,
+        replace_chars: CompiledReplaces,
+    ) -> list[tuple[str, bytes]]:
         res = []
         start_pos = len(current_prefix)
         end_pos = len(key)
@@ -342,7 +344,7 @@ class BytesDAWG(CompletionDAWG):
             b_step = key[word_pos].encode("utf8")
 
             if b_step in replace_chars:
-                for (b_replace_char, u_replace_char) in replace_chars[b_step]:
+                for b_replace_char, u_replace_char in replace_chars[b_step]:
                     next_index = index
 
                     next_index = self.dct.follow_bytes(b_replace_char, next_index)
@@ -378,7 +380,13 @@ class BytesDAWG(CompletionDAWG):
         """
         return self._similar_items("", key, self.dct.ROOT, replaces)
 
-    def _similar_item_values(self, start_pos: int, key: str, index: int, replace_chars: CompiledReplaces) -> list[bytes]:
+    def _similar_item_values(
+        self,
+        start_pos: int,
+        key: str,
+        index: int,
+        replace_chars: CompiledReplaces,
+    ) -> list[bytes]:
         res = []
         end_pos = len(key)
         word_pos = start_pos
@@ -387,7 +395,7 @@ class BytesDAWG(CompletionDAWG):
             b_step = key[word_pos].encode("utf8")
 
             if b_step in replace_chars:
-                for (b_replace_char, _u_replace_char) in replace_chars[b_step]:
+                for b_replace_char, _u_replace_char in replace_chars[b_step]:
                     next_index = index
 
                     next_index = self.dct.follow_bytes(b_replace_char, next_index)

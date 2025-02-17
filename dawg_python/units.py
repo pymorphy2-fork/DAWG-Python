@@ -1,6 +1,7 @@
 """
 Unit of a dictionary
 """
+
 PRECISION_MASK = 0xFFFFFFFF
 
 OFFSET_MAX = 1 << 21

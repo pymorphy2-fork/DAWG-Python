@@ -69,7 +69,6 @@ def load_int_dawg():
 
 
 def benchmark() -> None:
-
     tests = [
         ("__getitem__ (hits)", "for word in WORDS100k: data[word]", "M ops/sec", 0.1, 3),
         ("get() (hits)", "for word in WORDS100k: data.get(word)", "M ops/sec", 0.1, 3),

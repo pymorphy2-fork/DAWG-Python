@@ -2,6 +2,7 @@
 """
 Script for building test DAWGs.
 """
+
 import struct
 
 import dawg
@@ -40,7 +41,6 @@ def create_int_completion_dawg():
 
 
 def build_test_data() -> None:
-
     dawg.CompletionDAWG(["f", "bar", "foo", "foobar"]).save("dev_data/small/completion.dawg")
     dawg.CompletionDAWG([]).save("dev_data/small/completion-empty.dawg")
 
