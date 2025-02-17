@@ -196,11 +196,11 @@ class BytesDAWG(CompletionDAWG):
     {unicode -> list of bytes objects} mapping.
     """
 
-    def __init__(self, payload_separator=PAYLOAD_SEPARATOR) -> None:
+    def __init__(self, payload_separator: bytes | None = PAYLOAD_SEPARATOR) -> None:
         super().__init__()
         self._payload_separator = payload_separator
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key: str | bytes) -> bool:
         if not isinstance(key, bytes):
             key = key.encode("utf8")
         return bool(self._follow_key(key))
@@ -211,7 +211,7 @@ class BytesDAWG(CompletionDAWG):
             raise KeyError(key)
         return res
 
-    def get(self, key, default=None):
+    def get(self, key: str | bytes, default: list[bytes] | None = None) -> list[bytes] | None:
         """
         Returns a list of payloads (as byte objects) for a given key
         or ``default`` if the key is not found.
@@ -221,18 +221,18 @@ class BytesDAWG(CompletionDAWG):
 
         return self.b_get_value(key) or default
 
-    def _follow_key(self, b_key):
+    def _follow_key(self, b_key: bytes) -> int | None:
         index = self.dct.follow_bytes(b_key, self.dct.ROOT)
         if not index:
-            return False
+            return None
 
         index = self.dct.follow_bytes(self._payload_separator, index)
         if not index:
-            return False
+            return None
 
         return index
 
-    def _value_for_index(self, index):
+    def _value_for_index(self, index: int) -> list[bytes]:
         res = []
 
         completer = wrapper.Completer(self.dct, self.guide)
@@ -244,13 +244,13 @@ class BytesDAWG(CompletionDAWG):
 
         return res
 
-    def b_get_value(self, b_key):
+    def b_get_value(self, b_key) -> list[bytes]:
         index = self._follow_key(b_key)
         if not index:
             return []
         return self._value_for_index(index)
 
-    def keys(self, prefix=""):
+    def keys(self, prefix: str | bytes = "") -> list[str]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
         res = []
@@ -271,7 +271,7 @@ class BytesDAWG(CompletionDAWG):
             res.append(u_key)
         return res
 
-    def iterkeys(self, prefix=""):
+    def iterkeys(self, prefix: str | bytes = "") -> Generator[bytes, None, None]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
 
@@ -290,7 +290,7 @@ class BytesDAWG(CompletionDAWG):
             u_key = completer.key[:payload_idx].decode("utf8")
             yield u_key
 
-    def items(self, prefix=""):
+    def items(self, prefix: str | bytes = "") -> list[tuple[str, bytes]]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
         res = []
@@ -310,7 +310,7 @@ class BytesDAWG(CompletionDAWG):
 
         return res
 
-    def iteritems(self, prefix=""):
+    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, bytes], None, None]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
 
@@ -328,10 +328,10 @@ class BytesDAWG(CompletionDAWG):
             item = (key.decode("utf8"), a2b_base64(value))
             yield item
 
-    def _has_value(self, index):
+    def _has_value(self, index: int) -> int | None:
         return self.dct.follow_bytes(PAYLOAD_SEPARATOR, index)
 
-    def _similar_items(self, current_prefix, key, index, replace_chars):
+    def _similar_items(self, current_prefix: str, key: str, index: int, replace_chars: CompiledReplaces) -> list[tuple[str, bytes]]:
 
         res = []
         start_pos = len(current_prefix)
@@ -366,7 +366,7 @@ class BytesDAWG(CompletionDAWG):
 
         return res
 
-    def similar_items(self, key, replaces):
+    def similar_items(self, key: str, replaces: CompiledReplaces) -> list[tuple[str, bytes]]:
         """
         Returns a list of (key, value) tuples for all variants of ``key``
         in this DAWG according to ``replaces``.
@@ -378,7 +378,7 @@ class BytesDAWG(CompletionDAWG):
         """
         return self._similar_items("", key, self.dct.ROOT, replaces)
 
-    def _similar_item_values(self, start_pos, key, index, replace_chars):
+    def _similar_item_values(self, start_pos: int, key: str, index: int, replace_chars: CompiledReplaces) -> list[bytes]:
         res = []
         end_pos = len(key)
         word_pos = start_pos
