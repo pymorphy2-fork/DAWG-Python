@@ -8,7 +8,7 @@ from . import wrapper
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Mapping
+    from typing import Generator, Mapping
 
     from typing_extensions import Self, TypeAlias
 
@@ -133,12 +133,14 @@ class CompletionDAWG(DAWG):
     """
     DAWG with key completion support.
     """
+    dct: wrapper.Dictionary
+    guide: wrapper.Guide | None
 
     def __init__(self) -> None:
         super().__init__()
         self.guide = None
 
-    def keys(self, prefix=""):
+    def keys(self, prefix: str = "") -> list[str]:
         b_prefix = prefix.encode("utf8")
         res = []
 
@@ -155,7 +157,7 @@ class CompletionDAWG(DAWG):
 
         return res
 
-    def iterkeys(self, prefix=""):
+    def iterkeys(self, prefix: str = "") -> Generator[str, None, None]:
         b_prefix = prefix.encode("utf8")
         index = self.dct.follow_bytes(b_prefix, self.dct.ROOT)
         if index is None:
@@ -167,7 +169,7 @@ class CompletionDAWG(DAWG):
         while completer.next():
             yield completer.key.decode("utf8")
 
-    def load(self, path):
+    def load(self, path: str | Path) -> Self:
         """
         Loads DAWG from a file.
         """
