@@ -6,7 +6,6 @@ from .utils import data_path
 
 
 class TestBytesDAWG:
-
     DATA = (
         ("foo", b"data1"),
         ("bar", b"data2"),
@@ -82,7 +81,6 @@ class TestBytesDAWG:
 
 
 class TestRecordDAWG:
-
     STRUCTURED_DATA = (
         ("foo", (3, 2, 256)),
         ("bar", (3, 1, 0)),

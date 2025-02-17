@@ -82,7 +82,6 @@ class Dictionary:
 
 
 class Guide:
-
     ROOT = 0
 
     def __init__(self) -> None:
@@ -106,14 +105,14 @@ class Completer:
     _dic: Dictionary | None
     _guide: Guide | None
 
-    def __init__(self, dic: Dictionary | None =None, guide: Guide | None=None) -> None:
+    def __init__(self, dic: Dictionary | None = None, guide: Guide | None = None) -> None:
         self._dic = dic
         self._guide = guide
 
     def value(self) -> int:
         return self._dic.value(self._last_index)
 
-    def start(self, index: int, prefix: bytes=b"") -> None:
+    def start(self, index: int, prefix: bytes = b"") -> None:
         self.key = bytearray(prefix)
 
         if self._guide.size():
@@ -131,7 +130,6 @@ class Completer:
         index = self._index_stack[-1]
 
         if self._last_index != self._dic.ROOT:
-
             child_label = self._guide.child(index)  # UCharType
 
             if child_label:

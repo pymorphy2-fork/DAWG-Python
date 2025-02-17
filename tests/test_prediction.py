@@ -13,7 +13,6 @@ def encode(w):
 
 
 class TestPrediction:
-
     REPLACES = dawg_python.DAWG.compile_replaces({"Е": "Ё"})
 
     DATA = ["ЁЖИК", "ЁЖИКЕ", "ЁЖ", "ДЕРЕВНЯ", "ДЕРЁВНЯ", "ЕМ", "ОЗЕРА", "ОЗЁРА", "ОЗЕРО"]
@@ -73,7 +72,6 @@ class TestPrediction:
 
 
 class TestMultiValuedPrediction:
-
     REPLACES = dawg_python.DAWG.compile_replaces({"е": ["ё", "ѣ"], "и": "і"})
 
     DATA = "хлѣб ёлка ель лѣс лѣсное всё всѣ бѣлёная изобрѣтён лев лёв лѣв вѣнскій".split(" ")
@@ -101,9 +99,9 @@ class TestMultiValuedPrediction:
 
     SUITE_ITEMS = [
         (
-            it[0], # key
+            it[0],  # key
             [
-                (w, [encode(w)]) # item, value pair
+                (w, [encode(w)])  # item, value pair
                 for w in it[1]
             ],
         )
@@ -112,7 +110,7 @@ class TestMultiValuedPrediction:
 
     SUITE_VALUES = [
         (
-            it[0], # key
+            it[0],  # key
             [[encode(w)] for w in it[1]],
         )
         for it in SUITE
