@@ -1,7 +1,15 @@
+from __future__ import annotations
+
 import array
 import struct
+from typing import TYPE_CHECKING
 
 from . import units
+
+if TYPE_CHECKING:
+    from io import BytesIO
+
+    from typing_extensions import Self
 
 
 class Dictionary:
@@ -15,29 +23,29 @@ class Dictionary:
     ROOT = 0
     "Root index"
 
-    def has_value(self, index):
+    def has_value(self, index: int) -> bool:
         """Checks if a given index is related to the end of a key."""
         return units.has_leaf(self._units[index])
 
-    def value(self, index):
+    def value(self, index: int) -> int:
         """Gets a value from a given index."""
         offset = units.offset(self._units[index])
         value_index = (index ^ offset) & units.PRECISION_MASK
         return units.value(self._units[value_index])
 
-    def read(self, fp) -> None:
+    def read(self, fp: BytesIO) -> None:
         """Reads a dictionary from an input stream."""
         base_size = struct.unpack("=I", fp.read(4))[0]
         self._units.fromfile(fp, base_size)
 
-    def contains(self, key):
+    def contains(self, key: bytes) -> bool:
         """Exact matching."""
         index = self.follow_bytes(key, self.ROOT)
         if index is None:
             return False
         return self.has_value(index)
 
-    def find(self, key):
+    def find(self, key: bytes) -> int:
         """Exact matching (returns value)"""
         index = self.follow_bytes(key, self.ROOT)
         if index is None:
@@ -46,7 +54,7 @@ class Dictionary:
             return -1
         return self.value(index)
 
-    def follow_char(self, label, index):
+    def follow_char(self, label: int, index: int) -> int | None:
         """Follows a transition"""
         offset = units.offset(self._units[index])
         next_index = (index ^ offset ^ label) & units.PRECISION_MASK
@@ -56,7 +64,7 @@ class Dictionary:
 
         return next_index
 
-    def follow_bytes(self, s, index):
+    def follow_bytes(self, s: bytes, index: int) -> int | None:
         """Follows transitions."""
         for ch in s:
             index = self.follow_char(ch, index)
@@ -66,7 +74,7 @@ class Dictionary:
         return index
 
     @classmethod
-    def load(cls, path):
+    def load(cls, path) -> Self:
         dawg = cls()
         with open(path, "rb") as f:
             dawg.read(f)
@@ -80,29 +88,32 @@ class Guide:
     def __init__(self) -> None:
         self._units = array.array("B")
 
-    def child(self, index):
+    def child(self, index: int) -> int:
         return self._units[index * 2]
 
-    def sibling(self, index):
+    def sibling(self, index: int) -> int:
         return self._units[index * 2 + 1]
 
-    def read(self, fp) -> None:
+    def read(self, fp: BytesIO) -> None:
         base_size = struct.unpack("=I", fp.read(4))[0]
         self._units.fromfile(fp, base_size * 2)
 
-    def size(self):
+    def size(self) -> int:
         return len(self._units)
 
 
 class Completer:
-    def __init__(self, dic=None, guide=None) -> None:
+    _dic: Dictionary | None
+    _guide: Guide | None
+
+    def __init__(self, dic: Dictionary | None =None, guide: Guide | None=None) -> None:
         self._dic = dic
         self._guide = guide
 
-    def value(self):
+    def value(self) -> int:
         return self._dic.value(self._last_index)
 
-    def start(self, index, prefix=b"") -> None:
+    def start(self, index: int, prefix: bytes=b"") -> None:
         self.key = bytearray(prefix)
 
         if self._guide.size():
@@ -111,7 +122,7 @@ class Completer:
         else:
             self._index_stack = []
 
-    def next(self):
+    def next(self) -> bool:
         "Gets the next key"
 
         if not self._index_stack:
@@ -149,7 +160,7 @@ class Completer:
 
         return self._find_terminal(index)
 
-    def _follow(self, label, index):
+    def _follow(self, label: int, index: int) -> int | None:
         next_index = self._dic.follow_char(label, index)
         if next_index is None:
             return None
@@ -158,7 +169,7 @@ class Completer:
         self._index_stack.append(next_index)
         return next_index
 
-    def _find_terminal(self, index) -> bool:
+    def _find_terminal(self, index: int) -> bool:
         while not self._dic.has_value(index):
             label = self._guide.child(index)
 
