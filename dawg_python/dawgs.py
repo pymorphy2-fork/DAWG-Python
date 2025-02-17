@@ -8,7 +8,7 @@ from . import wrapper
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Generator, Mapping
+    from typing import Any, Generator, Mapping
 
     from typing_extensions import Self, TypeAlias
 
@@ -417,7 +417,7 @@ class BytesDAWG(CompletionDAWG):
 
         return res
 
-    def similar_item_values(self, key, replaces):
+    def similar_item_values(self, key: str, replaces: CompiledReplaces) -> list[bytes]:
         """
         Returns a list of values for all variants of the ``key``
         in this DAWG according to ``replaces``.
@@ -431,20 +431,20 @@ class BytesDAWG(CompletionDAWG):
 
 
 class RecordDAWG(BytesDAWG):
-    def __init__(self, fmt, payload_separator=PAYLOAD_SEPARATOR) -> None:
+    def __init__(self, fmt: str | bytes, payload_separator: bytes = PAYLOAD_SEPARATOR) -> None:
         super().__init__(payload_separator)
-        self._struct = struct.Struct(str(fmt))
+        self._struct = struct.Struct(fmt)
         self.fmt = fmt
 
-    def _value_for_index(self, index):
+    def _value_for_index(self, index: int) -> list[tuple[Any, ...]]:
         value = super()._value_for_index(index)
         return [self._struct.unpack(val) for val in value]
 
-    def items(self, prefix=""):
+    def items(self, prefix: str | bytes = "") -> list[tuple[str, tuple[Any, ...]]]:
         res = super().items(prefix)
         return [(key, self._struct.unpack(val)) for (key, val) in res]
 
-    def iteritems(self, prefix=""):
+    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, tuple[Any, ...]], None, None]:
         res = super().iteritems(prefix)
         return ((key, self._struct.unpack(val)) for (key, val) in res)
 
@@ -458,13 +458,13 @@ class IntDAWG(DAWG):
     It can store integer values for unicode keys.
     """
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str | bytes) -> int | None:
         res = self.get(key, LOOKUP_ERROR)
         if res == LOOKUP_ERROR:
             raise KeyError(key)
         return res
 
-    def get(self, key, default=None):
+    def get(self, key: str | bytes, default: int | None = None) -> int | None:
         """
         Return value for the given key or ``default`` if the key is not found.
         """
@@ -475,7 +475,7 @@ class IntDAWG(DAWG):
             return default
         return res
 
-    def b_get_value(self, key):
+    def b_get_value(self, key: bytes) -> int:
         return self.dct.find(key)
 
 
