@@ -138,21 +138,7 @@ class CompletionDAWG(DAWG):
         self.guide = None
 
     def keys(self, prefix: str = "") -> list[str]:
-        b_prefix = prefix.encode("utf8")
-        res = []
-
-        index = self.dct.follow_bytes(b_prefix, self.dct.ROOT)
-        if index is None:
-            return res
-
-        completer = wrapper.Completer(self.dct, self.guide)
-        completer.start(index, b_prefix)
-
-        while completer.next():
-            key = completer.key.decode("utf8")
-            res.append(key)
-
-        return res
+        return list(self.iterkeys(prefix))
 
     def iterkeys(self, prefix: str = "") -> Generator[str, None, None]:
         b_prefix = prefix.encode("utf8")
@@ -248,25 +234,7 @@ class BytesDAWG(CompletionDAWG):
         return self._value_for_index(index)
 
     def keys(self, prefix: str | bytes = "") -> list[str]:
-        if not isinstance(prefix, bytes):
-            prefix = prefix.encode("utf8")
-        res = []
-
-        index = self.dct.ROOT
-
-        if prefix:
-            index = self.dct.follow_bytes(prefix, index)
-            if not index:
-                return res
-
-        completer = wrapper.Completer(self.dct, self.guide)
-        completer.start(index, prefix)
-
-        while completer.next():
-            payload_idx = completer.key.index(self._payload_separator)
-            u_key = completer.key[:payload_idx].decode("utf8")
-            res.append(u_key)
-        return res
+        return list(self.iterkeys(prefix))
 
     def iterkeys(self, prefix: str | bytes = "") -> Generator[bytes, None, None]:
         if not isinstance(prefix, bytes):
@@ -288,24 +256,7 @@ class BytesDAWG(CompletionDAWG):
             yield u_key
 
     def items(self, prefix: str | bytes = "") -> list[tuple[str, bytes]]:
-        if not isinstance(prefix, bytes):
-            prefix = prefix.encode("utf8")
-        res = []
-
-        index = self.dct.ROOT
-        if prefix:
-            index = self.dct.follow_bytes(prefix, index)
-            if not index:
-                return res
-
-        completer = wrapper.Completer(self.dct, self.guide)
-        completer.start(index, prefix)
-
-        while completer.next():
-            key, value = completer.key.split(self._payload_separator)
-            res.append((key.decode("utf8"), a2b_base64(value)))
-
-        return res
+        return list(self.iteritems(prefix))
 
     def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, bytes], None, None]:
         if not isinstance(prefix, bytes):
@@ -441,8 +392,7 @@ class RecordDAWG(BytesDAWG):
         return [self._struct.unpack(val) for val in value]
 
     def items(self, prefix: str | bytes = "") -> list[tuple[str, tuple[Any, ...]]]:
-        res = super().items(prefix)
-        return [(key, self._struct.unpack(val)) for (key, val) in res]
+        return list(self.iteritems(prefix))
 
     def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, tuple[Any, ...]], None, None]:
         res = super().iteritems(prefix)
@@ -486,23 +436,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
     """
 
     def items(self, prefix: str | bytes = "") -> list[tuple[str, int]]:
-        if not isinstance(prefix, bytes):
-            prefix = prefix.encode("utf8")
-        res = []
-        index = self.dct.ROOT
-
-        if prefix:
-            index = self.dct.follow_bytes(prefix, index)
-            if not index:
-                return res
-
-        completer = wrapper.Completer(self.dct, self.guide)
-        completer.start(index, prefix)
-
-        while completer.next():
-            res.append((completer.key.decode("utf8"), completer.value()))
-
-        return res
+        return list(self.iteritems(prefix))
 
     def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, int], None, None]:
         if not isinstance(prefix, bytes):
