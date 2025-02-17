@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "DAWG2-Python"
-version = "0.8.1"
+version = "0.9.0"
 description = "Pure-python reader for DAWGs (DAFSAs) created by dawgdic C++ library or DAWG Python extension."
 authors = ["Mikhail Korobov <kmike84@gmail.com>"]
 license = "MIT"
