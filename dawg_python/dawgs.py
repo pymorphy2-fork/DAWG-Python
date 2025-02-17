@@ -8,7 +8,7 @@ from . import wrapper
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Any, Generator, Mapping
+    from typing import Any, Iterator, Mapping
 
     from typing_extensions import Self, TypeAlias
 
@@ -87,8 +87,8 @@ class DAWG:
         """
         return self._similar_keys("", key, self.dct.ROOT, replaces)
 
-    @classmethod
-    def compile_replaces(cls, replaces: Replaces) -> CompiledReplaces:
+    @staticmethod
+    def compile_replaces(replaces: Replaces) -> CompiledReplaces:
         for k, v in replaces.items():
             if len(k) != 1:
                 msg = "Keys must be single-char unicode strings."
@@ -130,7 +130,6 @@ class CompletionDAWG(DAWG):
     DAWG with key completion support.
     """
 
-    dct: wrapper.Dictionary
     guide: wrapper.Guide | None
 
     def __init__(self) -> None:
@@ -140,7 +139,7 @@ class CompletionDAWG(DAWG):
     def keys(self, prefix: str = "") -> list[str]:
         return list(self.iterkeys(prefix))
 
-    def iterkeys(self, prefix: str = "") -> Generator[str, None, None]:
+    def iterkeys(self, prefix: str = "") -> Iterator[str]:
         b_prefix = prefix.encode("utf8")
         index = self.dct.follow_bytes(b_prefix, self.dct.ROOT)
         if index is None:
@@ -179,7 +178,7 @@ class BytesDAWG(CompletionDAWG):
     {unicode -> list of bytes objects} mapping.
     """
 
-    def __init__(self, payload_separator: bytes | None = PAYLOAD_SEPARATOR) -> None:
+    def __init__(self, payload_separator: bytes = PAYLOAD_SEPARATOR) -> None:
         super().__init__()
         self._payload_separator = payload_separator
 
@@ -236,7 +235,7 @@ class BytesDAWG(CompletionDAWG):
     def keys(self, prefix: str | bytes = "") -> list[str]:
         return list(self.iterkeys(prefix))
 
-    def iterkeys(self, prefix: str | bytes = "") -> Generator[bytes, None, None]:
+    def iterkeys(self, prefix: str | bytes = "") -> Iterator[bytes]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
 
@@ -258,7 +257,7 @@ class BytesDAWG(CompletionDAWG):
     def items(self, prefix: str | bytes = "") -> list[tuple[str, bytes]]:
         return list(self.iteritems(prefix))
 
-    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, bytes], None, None]:
+    def iteritems(self, prefix: str | bytes = "") -> Iterator[tuple[str, bytes]]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
 
@@ -394,7 +393,7 @@ class RecordDAWG(BytesDAWG):
     def items(self, prefix: str | bytes = "") -> list[tuple[str, tuple[Any, ...]]]:
         return list(self.iteritems(prefix))
 
-    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, tuple[Any, ...]], None, None]:
+    def iteritems(self, prefix: str | bytes = "") -> Iterator[tuple[str, tuple[Any, ...]]]:
         res = super().iteritems(prefix)
         return ((key, self._struct.unpack(val)) for (key, val) in res)
 
@@ -438,7 +437,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
     def items(self, prefix: str | bytes = "") -> list[tuple[str, int]]:
         return list(self.iteritems(prefix))
 
-    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, int], None, None]:
+    def iteritems(self, prefix: str | bytes = "") -> Iterator[tuple[str, int]]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
         index = self.dct.ROOT
