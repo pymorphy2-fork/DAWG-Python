@@ -10,17 +10,17 @@ HAS_LEAF_BIT = 1 << 8
 EXTENSION_BIT = 1 << 9
 
 
-def has_leaf(base: int, _mask=HAS_LEAF_BIT) -> bool:
+def has_leaf(base: int, _mask: int = HAS_LEAF_BIT) -> bool:
     """Check if a unit has a leaf as a child or not."""
     return bool(base & _mask)
 
 
-def value(base: int, _mask=~IS_LEAF_BIT & PRECISION_MASK) -> int:
+def value(base: int, _mask: int = ~IS_LEAF_BIT & PRECISION_MASK) -> int:
     """Check if a unit corresponds to a leaf or not."""
     return base & _mask
 
 
-def label(base: int, _mask=IS_LEAF_BIT | 0xFF) -> int:
+def label(base: int, _mask: int = IS_LEAF_BIT | 0xFF) -> int:
     """Read a label with a leaf flag from a non-leaf unit."""
     return base & _mask
 

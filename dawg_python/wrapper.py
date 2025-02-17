@@ -8,6 +8,7 @@ from . import units
 
 if TYPE_CHECKING:
     from io import BytesIO
+    from pathlib import Path
 
     from typing_extensions import Self
 
@@ -74,7 +75,7 @@ class Dictionary:
         return index
 
     @classmethod
-    def load(cls, path) -> Self:
+    def load(cls, path: str | Path) -> Self:
         dawg = cls()
         with open(path, "rb") as f:
             dawg.read(f)

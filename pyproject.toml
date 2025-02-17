@@ -42,14 +42,6 @@ target-version = "py38"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "ANN001",
-    "ANN002",
-    "ANN201",
-    "ANN202",
-    "ANN204",
-    "ANN206",
-    # ^^^ Silence warnings about the type annotations for now
-
     "D",
     "PTH123",
 ]
@@ -57,6 +49,10 @@ fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "_prepare_dev_data.py" = [
+    "ANN001",
+    "ANN002",
+    "ANN201",
+    "ANN202",
     "ERA001",
 ]
 
@@ -65,6 +61,10 @@ fixable = ["ALL"]
 ]
 
 "bench/*" = [
+    "ANN001",
+    "ANN002",
+    "ANN201",
+    "ANN202",
     "ERA001",
     "PERF401",
     "PLR0913",

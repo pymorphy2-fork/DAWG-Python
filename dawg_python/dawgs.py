@@ -26,7 +26,7 @@ class DAWG:
     def __init__(self) -> None:
         self.dct = None
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key: str | bytes) -> bool:
         if not isinstance(key, bytes):
             key = key.encode("utf8")
         return self.dct.contains(key)
@@ -73,7 +73,7 @@ class DAWG:
 
         return res
 
-    def similar_keys(self, key: str, replaces: CompiledReplaces):
+    def similar_keys(self, key: str, replaces: CompiledReplaces) -> list[str]:
         """
         Returns all variants of ``key`` in this DAWG according to
         ``replaces``.
@@ -202,7 +202,7 @@ class BytesDAWG(CompletionDAWG):
             key = key.encode("utf8")
         return bool(self._follow_key(key))
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str | bytes) -> list[bytes]:
         res = self.get(key)
         if res is None:
             raise KeyError(key)
@@ -241,7 +241,7 @@ class BytesDAWG(CompletionDAWG):
 
         return res
 
-    def b_get_value(self, b_key) -> list[bytes]:
+    def b_get_value(self, b_key: bytes) -> list[bytes]:
         index = self._follow_key(b_key)
         if not index:
             return []
