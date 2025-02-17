@@ -485,7 +485,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
     It can store integer values for unicode keys and support key completion.
     """
 
-    def items(self, prefix=""):
+    def items(self, prefix: str | bytes = "") -> list[tuple[str, int]]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
         res = []
@@ -504,7 +504,7 @@ class IntCompletionDAWG(CompletionDAWG, IntDAWG):
 
         return res
 
-    def iteritems(self, prefix=""):
+    def iteritems(self, prefix: str | bytes = "") -> Generator[tuple[str, int], None, None]:
         if not isinstance(prefix, bytes):
             prefix = prefix.encode("utf8")
         index = self.dct.ROOT
