@@ -2,8 +2,18 @@ from __future__ import annotations
 
 import struct
 from binascii import a2b_base64
+from typing import TYPE_CHECKING
 
 from . import wrapper
+
+if TYPE_CHECKING:
+    from pathlib import Path
+    from typing import Mapping
+
+    from typing_extensions import Self, TypeAlias
+
+    Replaces: TypeAlias = Mapping[str, str | list[str]]
+    CompiledReplaces: TypeAlias = Mapping[str, list[tuple[bytes, str]]]
 
 
 class DAWG:
@@ -20,17 +30,17 @@ class DAWG:
             key = key.encode("utf8")
         return self.dct.contains(key)
 
-    def load(self, path):
+    def load(self, path: str | Path) -> Self:
         """
         Loads DAWG from a file.
         """
         self.dct = wrapper.Dictionary.load(path)
         return self
 
-    def _has_value(self, index):
+    def _has_value(self, index: int) -> bool:
         return self.dct.has_value(index)
 
-    def _similar_keys(self, current_prefix, key, index, replace_chars):
+    def _similar_keys(self, current_prefix: str, key: str, index: int, replace_chars: CompiledReplaces) -> list[str]:
 
         res = []
         start_pos = len(current_prefix)
@@ -63,7 +73,7 @@ class DAWG:
 
         return res
 
-    def similar_keys(self, key, replaces):
+    def similar_keys(self, key: str, replaces: CompiledReplaces):
         """
         Returns all variants of ``key`` in this DAWG according to
         ``replaces``.
@@ -78,7 +88,7 @@ class DAWG:
         return self._similar_keys("", key, self.dct.ROOT, replaces)
 
     @classmethod
-    def compile_replaces(cls, replaces):
+    def compile_replaces(cls, replaces: Replaces) -> CompiledReplaces:
 
         for k,v in replaces.items():
             if len(k) != 1:
@@ -96,7 +106,7 @@ class DAWG:
             for k, v in replaces.items()
         }
 
-    def prefixes(self, key):
+    def prefixes(self, key: str | bytes) -> list[str]:
         """
         Returns a list with keys of this DAWG that are prefixes of the ``key``.
         """
