@@ -109,14 +109,14 @@ NON_WORDS_1k = ['ыва', 'xyz', 'соы', 'Axx', 'avы']*200
 
     # DAWG-specific benchmarks
     for struct_name, setup in structures[1:]:
-        _bench_data = [
+        _bench_data_pairs = [
             ("hits", "WORDS100k"),
             ("mixed", "MIXED_WORDS100k"),
             ("misses", "NON_WORDS100k"),
         ]
 
         for meth in ["prefixes"]:
-            for name, data in _bench_data:
+            for name, data in _bench_data_pairs:
                 bench(
                     f"{struct_name}.{meth} ({name})",
                     timeit.Timer(
@@ -126,14 +126,14 @@ NON_WORDS_1k = ['ыва', 'xyz', 'соы', 'Axx', 'avы']*200
                     runs=3,
                 )
 
-        _bench_data = [
+        _bench_data_triples = [
             ("xxx", "avg_len(res)==415", "PREFIXES_3_1k"),
             ("xxxxx", "avg_len(res)==17", "PREFIXES_5_1k"),
             ("xxxxxxxx", "avg_len(res)==3", "PREFIXES_8_1k"),
             ("xxxxx..xx", "avg_len(res)==1.4", "PREFIXES_15_1k"),
             ("xxx", "NON_EXISTING", "NON_WORDS_1k"),
         ]
-        for xxx, avg, data in _bench_data:
+        for xxx, avg, data in _bench_data_triples:
             for meth in ["keys", "items"]:
                 bench(
                     f'{struct_name}.{meth}(prefix="{xxx}"), {avg}',

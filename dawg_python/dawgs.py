@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import struct
 from binascii import a2b_base64
 
@@ -8,6 +10,7 @@ class DAWG:
     """
     Base DAWG wrapper.
     """
+    dct: wrapper.Dictionary | None
 
     def __init__(self) -> None:
         self.dct = None
