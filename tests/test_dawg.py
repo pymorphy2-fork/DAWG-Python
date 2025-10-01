@@ -14,7 +14,7 @@ def test_c_dawg_contains():
 
     d = dawg_python.Dictionary()
 
-    fd, path = tempfile.mkstemp()
+    _fd, path = tempfile.mkstemp()
     bin_dawg.save(path)
 
     with open(path, "rb") as f:
@@ -59,7 +59,7 @@ class TestCompletionDAWG:
 
     def test_no_segfaults_on_invalid_file(self):
         d = self.dawg()
-        fd, path = tempfile.mkstemp()
+        _fd, path = tempfile.mkstemp()
         with open(path, "w") as f:
             f.write("foo")
 
