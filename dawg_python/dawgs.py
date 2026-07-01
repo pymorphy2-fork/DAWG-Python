@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING
 from . import wrapper
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator, Mapping
     from pathlib import Path
-    from typing import Any, Iterator, Mapping
+    from typing import Any
 
     from typing_extensions import Self, TypeAlias
 
