@@ -21,7 +21,7 @@ classifiers = [
 repository = "https://github.com/pymorphy2-fork/DAWG-Python/"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 typing-extensions = { version = ">=4.0", python = "<3.11" }
 
 [tool.poetry.group.dev.dependencies]
@@ -37,7 +37,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 120
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 select = ["ALL"]
