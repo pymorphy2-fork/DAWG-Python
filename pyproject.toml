@@ -43,7 +43,9 @@ target-version = "py39"
 select = ["ALL"]
 ignore = [
     "COM812",
+    "CPY001",
     "D",
+    "PLR0917",
     "PTH123",
 ]
 fixable = ["ALL"]
