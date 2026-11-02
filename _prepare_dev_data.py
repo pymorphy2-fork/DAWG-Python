@@ -19,25 +19,25 @@ def create_dawg():
 def create_bytes_dawg():
     words = words100k()
     values = [struct.pack("<H", len(word)) for word in words]
-    return dawg.BytesDAWG(zip(words, values))
+    return dawg.BytesDAWG(zip(words, values, strict=False))
 
 
 def create_record_dawg():
     words = words100k()
     values = [[len(word)] for word in words]
-    return dawg.RecordDAWG("<H", zip(words, values))
+    return dawg.RecordDAWG("<H", zip(words, values, strict=False))
 
 
 def create_int_dawg():
     words = words100k()
     values = [len(word) for word in words]
-    return dawg.IntDAWG(zip(words, values))
+    return dawg.IntDAWG(zip(words, values, strict=False))
 
 
 def create_int_completion_dawg():
     words = words100k()
     values = [len(word) for word in words]
-    return dawg.IntCompletionDAWG(zip(words, values))
+    return dawg.IntCompletionDAWG(zip(words, values, strict=False))
 
 
 def build_test_data() -> None:

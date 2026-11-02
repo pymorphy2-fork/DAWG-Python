@@ -9,9 +9,9 @@ from . import wrapper
 if TYPE_CHECKING:
     from collections.abc import Iterator, Mapping
     from pathlib import Path
-    from typing import Any
+    from typing import Any, TypeAlias
 
-    from typing_extensions import Self, TypeAlias
+    from typing_extensions import Self
 
     Replaces: TypeAlias = Mapping[str, str | list[str]]
     CompiledReplaces: TypeAlias = Mapping[str, list[tuple[bytes, str]]]
